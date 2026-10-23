@@ -1,0 +1,140 @@
+:root {
+  --bleu: #0B1F3A; --bleu-2: #1D3B66; --bleu-3: #2F5A94;
+  --fond: #F4F1EA; --carte: #FFFFFF; --bord: #E2DDD0; --doux: #5B6B82;
+  --ok: #1F8A5B; --alerte: #D98A00; --danger: #C0392B; --wa: #1FA855;
+  --rayon: 14px; --ombre: 0 2px 10px rgba(11, 31, 58, .07);
+}
+body.with-sidebar { background: var(--fond); color: var(--bleu); }
+.admin-main main { padding: 28px; max-width: 1200px; }
+.admin-main h1 { margin: 0 0 6px; font-size: 1.6rem; font-weight: 800; }
+.admin-main .muted { color: var(--doux); font-size: .88rem; }
+
+/* ---- En-tête de page ---- */
+.pg-head { display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.pg-head p { margin: 4px 0 0; color: var(--doux); }
+
+/* ---- Boutons ---- */
+.admin-main .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 9px 16px; border: 1px solid var(--bleu); border-radius: 10px; background: var(--bleu);
+  color: #fff; font: inherit; font-weight: 600; font-size: .92rem; text-decoration: none;
+  cursor: pointer; transition: background .15s; }
+.admin-main .btn:hover { background: var(--bleu-2); color: #fff; }
+.admin-main .btn.secondary { background: #fff; color: var(--bleu); border-color: var(--bord); }
+.admin-main .btn.secondary:hover { background: var(--fond); }
+.admin-main .btn.wa { background: var(--wa); border-color: var(--wa); }
+.admin-main .btn.wa:hover { background: #17893f; }
+.admin-main .btn.petit { padding: 5px 12px; font-size: .82rem; }
+
+/* ---- Tableaux ---- */
+.pg-table-wrap { overflow-x: auto; background: var(--carte); border: 1px solid var(--bord);
+  border-radius: var(--rayon); box-shadow: var(--ombre); }
+.pg-table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+.pg-table th { text-align: left; padding: 12px 14px; background: #FAF8F3; color: var(--doux);
+  font-size: .76rem; text-transform: uppercase; letter-spacing: .04em;
+  border-bottom: 1px solid var(--bord); white-space: nowrap; }
+.pg-table td { padding: 12px 14px; border-bottom: 1px solid #F0ECE2; vertical-align: middle; }
+.pg-table tbody tr:last-child td { border-bottom: 0; }
+.pg-table tbody tr:hover { background: #FBFAF6; }
+.pg-table .num { text-align: right; white-space: nowrap; }
+.pg-table .prix { font-weight: 800; white-space: nowrap; }
+.pg-table .actions { text-align: right; white-space: nowrap; }
+.pg-nom strong { display: block; }
+.pg-nom small { color: var(--doux); }
+.pg-thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 10px;
+  border: 1px solid var(--bord); display: block; }
+.pg-thumb--vide { display: grid; place-items: center; background: #F0ECE2; font-size: 1.4rem; }
+.pg-vide { text-align: center; padding: 44px 20px; color: var(--doux); }
+.pg-vide strong { display: block; color: var(--bleu); font-size: 1.05rem; margin-bottom: 6px; }
+.pg-vide .btn { margin-top: 14px; }
+
+/* ---- Badges ---- */
+.admin-main .badge { display: inline-block; padding: 3px 10px; border-radius: 999px;
+  font-size: .76rem; font-weight: 700; background: #E8ECF3; color: var(--bleu-2); }
+.admin-main .badge.ok, .admin-main .badge.payee, .admin-main .badge.livree { background: #DDF3E8; color: var(--ok); }
+.admin-main .badge.alerte, .admin-main .badge.en_attente { background: #FFF1D6; color: var(--alerte); }
+.admin-main .badge.danger, .admin-main .badge.annulee { background: #F8DEDA; color: var(--danger); }
+.admin-main .badge.confirmee { background: #E1ECFA; color: var(--bleu-3); }
+.admin-main .badge.off { background: #ECE9E0; color: var(--doux); }
+
+/* ---- Filtres (chips) ---- */
+.admin-main .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.admin-main .chip { padding: 7px 14px; border-radius: 999px; border: 1px solid var(--bord);
+  background: #fff; color: var(--bleu); text-decoration: none; font-size: .88rem; font-weight: 600; }
+.admin-main .chip:hover { background: var(--fond); }
+.admin-main .chip.active { background: var(--bleu); color: #fff; border-color: var(--bleu); }
+
+/* ---- Cartes et colonnes (fiche commande) ---- */
+.admin-main .cols { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; margin-bottom: 16px; }
+.admin-main .card { background: var(--carte); border: 1px solid var(--bord);
+  border-radius: var(--rayon); padding: 18px; box-shadow: var(--ombre); margin-bottom: 16px; }
+.admin-main .cols .card { margin-bottom: 0; }
+.admin-main .card h3 { margin: 0 0 12px; font-size: 1.02rem; }
+.admin-main .card p { margin: 6px 0; }
+.admin-main .card .pg-table-wrap { box-shadow: none; }
+.pg-total { text-align: right; font-size: 1.15rem; margin-top: 14px; }
+.pg-boutons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+/* ---- Formulaires ---- */
+.pg-form, .admin-main .card form { display: grid; gap: 16px; }
+.pg-form { max-width: 680px; background: var(--carte); border: 1px solid var(--bord);
+  border-radius: var(--rayon); padding: 22px; box-shadow: var(--ombre); }
+.pg-form label, .admin-main .card form label { display: block; margin-bottom: 6px; font-weight: 600; font-size: .9rem; }
+.pg-form input[type=text], .pg-form input[type=email], .pg-form input[type=number],
+.pg-form input[type=password], .pg-form input[type=tel], .pg-form input[type=url],
+.pg-form input[type=color], .pg-form select, .pg-form textarea, .admin-main .card form select {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--bord); border-radius: 10px;
+  background: #fff; color: var(--bleu); font: inherit; }
+.pg-form input[type=color] { height: 44px; padding: 4px; }
+.pg-form textarea { min-height: 110px; resize: vertical; }
+.pg-form input[type=file] { width: 100%; padding: 10px; border: 1px dashed var(--bord);
+  border-radius: 10px; background: #FAF8F3; }
+.pg-form input[type=checkbox] { margin-right: 8px; }
+.pg-form input:focus, .pg-form select:focus, .pg-form textarea:focus {
+  outline: 0; border-color: var(--bleu-3); box-shadow: 0 0 0 3px rgba(47, 90, 148, .18); }
+.pg-form ul { list-style: none; margin: 6px 0 0; padding: 0; color: var(--danger);
+  font-size: .85rem; font-weight: 600; }
+.pg-form ul li::before { content: "⚠ "; }
+.pg-form__actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+@media (max-width: 760px) {
+  .admin-main main { padding: 16px; }
+  .admin-main .cols { grid-template-columns: 1fr; }
+}
+
+/* ---- Impression (bon de commande) ---- */
+@media print {
+  .sidebar, .no-print, .flash { display: none !important; }
+  .admin-shell { display: block; }
+  body.with-sidebar { background: #fff; }
+  .admin-main main { padding: 0; max-width: none; }
+  .admin-main .card, .pg-table-wrap { box-shadow: none; }
+}
+
+/* ---- Compléments formulaires ---- */
+.admin-main .btn.danger { background: #fff; color: var(--danger); border-color: #EBC3BD; }
+.admin-main .btn.danger:hover { background: var(--danger); color: #fff; }
+.pg-apercu { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding: 12px;
+  background: var(--carte); border: 1px solid var(--bord); border-radius: var(--rayon); max-width: 680px; }
+.pg-apercu img { width: 84px; height: 84px; object-fit: cover; border-radius: 12px; border: 1px solid var(--bord); }
+.pg-danger { margin-top: 22px; max-width: 680px; padding: 16px; border: 1px solid #EBC3BD;
+  border-radius: var(--rayon); background: #FDF4F2; display: flex; justify-content: space-between;
+  align-items: center; gap: 12px; flex-wrap: wrap; }
+.pg-danger p { margin: 0; color: var(--danger); font-weight: 600; font-size: .9rem; }
+
+/* ---- Touches dynamiques ---- */
+@keyframes entre { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.admin-main main { animation: entre .35s ease both; }
+.admin-main .btn { transition: transform .1s, box-shadow .2s, background .2s; }
+.admin-main .btn:hover { box-shadow: 0 6px 16px rgba(11, 31, 58, .22); }
+.admin-main .btn:active { transform: translateY(1px); }
+.admin-main .btn:disabled { opacity: .65; cursor: wait; }
+.admin-main .flash { transition: opacity .4s, transform .4s; }
+.admin-main .flash.hide { opacity: 0; transform: translateY(-6px); }
+.pg-table tbody tr { transition: background .15s; }
+.pg-recherche { width: 100%; max-width: 340px; margin-bottom: 12px; padding: 10px 14px; border: 1px solid var(--bord);
+  border-radius: 999px; background: #fff; font: inherit; }
+.pg-recherche:focus { outline: 0; border-color: var(--bleu-3); box-shadow: 0 0 0 3px rgba(47, 90, 148, .18); }
+.pg-apercu-live { display: block; margin-top: 10px; max-width: 160px; border-radius: 12px; border: 1px solid var(--bord); }
+.pg-apercu-live[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

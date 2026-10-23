@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Boutique{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/admin-ui.css">
+    {% block stylesheets %}{% endblock %}
+</head>
+{% set route = app.request.attributes.get('_route') ?? '' %}
+<body class="{{ is_granted('ROLE_ADMIN') ? 'with-sidebar' : '' }}">
+
+{% if is_granted('ROLE_ADMIN') %}
+    {% set b = app.user.boutique %}
+    <div class="admin-shell">
+        <aside class="sidebar">
+            <a class="side-brand" href="{{ path('admin_dashboard') }}">
+                {% if b and b.logo %}
+                    <img src="{{ b.logo }}" alt="">
+                {% else %}
+                    <span class="side-mark">{{ (b ? b.nom : 'B')|slice(0, 1)|upper }}</span>
+                {% endif %}
+                <span class="side-name">{{ b ? b.nom : 'Ma boutique' }}</span>
+            </a>
+
+            <nav class="side-nav">
+                <a class="{{ route == 'admin_dashboard' ? 'active' }}" href="{{ path('admin_dashboard') }}"><i>📊</i><span>Tableau de bord</span></a>
+                <a class="{{ route starts with 'app_produit' ? 'active' }}" href="{{ path('app_produit_index') }}"><i>📦</i><span>Produits</span></a>
+                <a class="{{ route starts with 'app_categorie' ? 'active' }}" href="{{ path('app_categorie_index') }}"><i>🏷️</i><span>Catégories</span></a>
+                <a class="{{ route starts with 'app_commande' ? 'active' }}" href="{{ path('app_commande_index') }}"><i>🧾</i><span>Commandes</span></a>
+                <a class="{{ route == 'admin_parametres' ? 'active' }}" href="{{ path('admin_parametres') }}"><i>⚙️</i><span>Ma boutique</span></a>
+                <a class="{{ route == 'admin_compte' ? 'active' }}" href="{{ path('admin_compte') }}"><i>🔑</i><span>Mon compte</span></a>
+            </nav>
+
+            <div class="side-foot">
+                {% if b %}<a href="{{ path('shop_catalogue', {slug: b.slug}) }}" target="_blank" rel="noopener"><i>🌐</i><span>Voir ma boutique</span></a>{% endif %}
+                <a href="{{ path('app_logout') }}"><i>🚪</i><span>Déconnexion</span></a>
+                <small class="side-user">{{ app.user.userIdentifier }}</small>
+            </div>
+        </aside>
+
+        <div class="admin-main">
+            <main>
+                {% for type, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="flash {{ type }}">{{ message }}</div>
+                    {% endfor %}
+                {% endfor %}
+                {% block body %}{% endblock %}
+            </main>
+        </div>
+    </div>
+{% else %}
+    <header class="topbar">
+        <div class="inner">
+            <a class="brand" href="/">Ma Boutique</a>
+            <a class="nav" href="{{ path('app_login') }}">Connexion</a>
+        </div>
+    </header>
+    <main>
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash {{ type }}">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+        {% block body_public %}{% endblock %}
+    </main>
+{% endif %}
+
+<script defer src="/js/admin.js"></script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

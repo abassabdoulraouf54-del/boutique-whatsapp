@@ -1,0 +1,7 @@
+{{ form_start(form, {attr: {class: 'pg-form'}}) }}
+    {{ form_widget(form) }}
+    <div class="pg-form__actions">
+        <button type="submit" class="btn">{{ button_label|default('Enregistrer') }}</button>
+        <a class="btn secondary" href="{{ path('app_categorie_index') }}">Annuler</a>
+    </div>
+{{ form_end(form) }}

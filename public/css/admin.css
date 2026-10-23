@@ -1,0 +1,141 @@
+/* ===== Administration : menu latéral ===== */
+body.with-sidebar { display: block; }
+.admin-shell { display: grid; grid-template-columns: 264px 1fr; min-height: 100vh; }
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 14px;
+  background: var(--navy);
+  color: #fff;
+  overflow-y: auto;
+}
+.side-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 6px 22px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,.14);
+  color: #fff;
+  text-decoration: none;
+}
+.side-brand img, .side-mark {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 12px;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  color: var(--navy);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+.side-name { font-weight: 800; font-size: 1.02rem; line-height: 1.2; }
+
+.side-nav, .side-foot { display: flex; flex-direction: column; gap: 4px; }
+.sidebar a:not(.side-brand) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  color: rgba(255,255,255,.78);
+  font-size: .93rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.sidebar a:not(.side-brand) i { font-style: normal; width: 22px; text-align: center; font-size: 1.05rem; }
+.sidebar a:not(.side-brand):hover { background: rgba(255,255,255,.1); color: #fff; }
+.side-nav a.active { background: rgba(255,255,255,.16); color: #fff; box-shadow: inset 3px 0 0 var(--cream); }
+.side-foot { margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.14); }
+.side-user { padding: 8px 14px 0; color: rgba(255,255,255,.55); font-size: .75rem; word-break: break-all; }
+
+.admin-main { min-width: 0; display: flex; flex-direction: column; }
+.admin-main main { width: 100%; max-width: 1040px; }
+
+/* ===== Tableau de bord ===== */
+.quick { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 20px 0 6px; }
+.stat { position: relative; }
+.stat .ico {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.14);
+  border-radius: 12px;
+  font-style: normal;
+  font-size: 1.4rem;
+}
+.stat.warn .ico { background: var(--navy-soft); }
+
+.chart {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 14px;
+  height: 230px;
+  margin-top: 8px;
+  padding: 6px 4px 0;
+}
+.bar-col { display: flex; flex-direction: column; align-items: center; min-height: 0; height: 100%; }
+.bar-track {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-bottom: 2px solid var(--border);
+}
+.bar {
+  width: 68%;
+  max-width: 48px;
+  min-height: 0;
+  background: linear-gradient(180deg, var(--navy-2), var(--navy));
+  border-radius: 9px 9px 0 0;
+  transition: opacity .15s;
+}
+.bar-col:hover .bar { opacity: .8; }
+.bar-label { margin-top: 8px; color: var(--navy); font-size: .8rem; font-weight: 700; }
+.bar-val { color: var(--muted); font-size: .68rem; white-space: nowrap; }
+
+section.card table { box-shadow: none; border: 1px solid var(--border); margin-bottom: 0; }
+.empty-note { margin: 10px 0 4px; padding: 22px 12px; text-align: center; color: var(--muted); background: var(--cream); border-radius: 10px; }
+
+/* ===== Mobile : le menu devient une barre horizontale ===== */
+@media (max-width: 900px) {
+  .admin-shell { grid-template-columns: 1fr; }
+  .sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-shadow: 0 2px 10px rgba(11,36,71,.3);
+  }
+  .side-brand { margin: 0 8px 0 0; padding: 0 12px 0 0; border: 0; border-right: 1px solid rgba(255,255,255,.2); }
+  .side-name { display: none; }
+  .side-nav, .side-foot { flex-direction: row; gap: 4px; }
+  .side-foot { margin: 0 0 0 auto; padding: 0; border: 0; }
+  .side-user { display: none; }
+  .sidebar a:not(.side-brand) { padding: 9px 12px; white-space: nowrap; font-size: .85rem; }
+  .sidebar a:not(.side-brand) i { width: auto; }
+  .admin-main main { padding: 22px 14px 40px; }
+  .chart { gap: 6px; height: 200px; }
+  .bar-val { display: none; }
+}

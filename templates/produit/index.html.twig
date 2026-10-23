@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block title %}Produits{% endblock %}
+
+{% block body %}
+<div class="pg-head">
+    <div>
+        <h1>Produits</h1>
+        <p>{{ produits|length }} produit{{ produits|length > 1 ? 's' }} dans votre boutique</p>
+    </div>
+    <a class="btn" href="{{ path('app_produit_new') }}">+ Nouveau produit</a>
+</div>
+
+{% if produits %}
+<div class="pg-table-wrap">
+    <table class="pg-table">
+        <thead>
+            <tr><th>Photo</th><th>Produit</th><th>Catégorie</th><th class="num">Prix</th><th>Stock</th><th>Visibilité</th><th></th></tr>
+        </thead>
+        <tbody>
+        {% for p in produits %}
+            <tr>
+                <td>
+                    {% if p.image %}
+                        <img class="pg-thumb" src="{{ p.image }}" alt="" loading="lazy">
+                    {% else %}
+                        <span class="pg-thumb pg-thumb--vide">🛍️</span>
+                    {% endif %}
+                </td>
+                <td class="pg-nom">
+                    <strong>{{ p.nom }}</strong>
+                    {% if p.description %}<small>{{ p.description|slice(0, 55) }}{{ p.description|length > 55 ? '…' }}</small>{% endif %}
+                </td>
+                <td>{{ p.categorie }}</td>
+                <td class="num prix">{{ p.prix|number_format(0, ',', ' ') }} FCFA</td>
+                <td>
+                    {% if p.stock <= 0 %}
+                        <span class="badge danger">Rupture</span>
+                    {% elseif p.stock <= 5 %}
+                        <span class="badge alerte">Stock bas · {{ p.stock }}</span>
+                    {% else %}
+                        <span class="badge ok">{{ p.stock }} en stock</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if p.actif %}<span class="badge ok">Visible</span>{% else %}<span class="badge off">Masqué</span>{% endif %}
+                </td>
+                <td class="actions"><a class="btn secondary petit" href="{{ path('app_produit_edit', {id: p.id}) }}">Modifier</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card pg-vide">
+    <strong>Aucun produit pour le moment</strong>
+    Ajoutez votre premier produit pour qu'il apparaisse dans votre boutique.
+    <div><a class="btn" href="{{ path('app_produit_new') }}">+ Ajouter un produit</a></div>
+</div>
+{% endif %}
+{% endblock %}

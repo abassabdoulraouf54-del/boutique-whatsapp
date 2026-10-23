@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ boutique.nom }}{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/shop.css">
+    <link rel="stylesheet" href="/css/shop-pro.css">
+    {% set couleur = ((boutique.couleurPrincipale ?? '') matches '/^#[0-9a-fA-F]{6}$/') ? boutique.couleurPrincipale : '#0B1F3A' %}
+    <meta name="theme-color" content="{{ couleur }}">
+    <meta name="description" content="{{ boutique.slogan ?: 'Commandez en ligne chez ' ~ boutique.nom }}">
+    <style>:root { --brand: {{ couleur }}; }</style>
+</head>
+<body>
+    {% set nb = app.session ? app.session.get('panier_' ~ boutique.slug, [])|length : 0 %}
+    {% set wa = boutique.numeroWhatsapp|replace({' ': '', '+': ''}) %}
+
+    <header class="topbar">
+        <div class="inner">
+            <a class="brand" href="{{ path('shop_catalogue', {slug: boutique.slug}) }}">
+                {% if boutique.logo %}<img class="logo" src="{{ boutique.logo }}" alt="">{% endif %}
+                {{ boutique.nom }}
+            </a>
+            <a class="nav" href="{{ path('shop_panier', {slug: boutique.slug}) }}">🛒 Panier{% if nb > 0 %} ({{ nb }}){% endif %}</a>
+        </div>
+    </header>
+
+    <main>
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash {{ type }}">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                {% if boutique.logo %}<img class="footer-logo" src="{{ boutique.logo }}" alt="">{% endif %}
+                <strong>{{ boutique.nom }}</strong>
+                <p>{{ boutique.slogan ?: 'Commandez en ligne, confirmez sur WhatsApp.' }}</p>
+                {% if boutique.adresse %}<p>📍 {{ boutique.adresse }}</p>{% endif %}
+            </div>
+            <div class="footer-links">
+                <h4>Boutique</h4>
+                <a href="{{ path('shop_catalogue', {slug: boutique.slug}) }}">Tous les produits</a>
+                <a href="{{ path('shop_panier', {slug: boutique.slug}) }}">Mon panier</a>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                {% if boutique.telephone %}<a class="footer-btn" href="tel:+{{ boutique.telephone }}">📞 Appeler +{{ boutique.telephone|slice(0, 3) }} {{ boutique.telephone|slice(3) }}</a>{% endif %}
+                <a class="footer-btn wa" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">💬 Écrire sur WhatsApp</a>
+            </div>
+        </div>
+        <div class="footer-bottom">© {{ 'now'|date('Y') }} {{ boutique.nom }} · Commandes confirmées via WhatsApp</div>
+    </footer>
+
+    <a class="wa-float" href="https://wa.me/{{ wa }}?text={{ ('Bonjour ' ~ boutique.nom ~ ', j\'ai une question.')|url_encode }}" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp">💬 WhatsApp</a>
+    <script defer src="/js/shop.js"></script>
+</body>
+</html>

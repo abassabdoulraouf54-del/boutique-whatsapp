@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+{% block title %}Commande n°{{ commande.id }}{% endblock %}
+
+{% block body %}
+{% set tel = commande.telephone|replace({' ': '', '+': '', '-': '', '.': '', '(': '', ')': ''}) %}
+{% if tel|length == 10 and tel starts with '0' %}{% set tel = '229' ~ tel %}{% endif %}
+{% set nomBoutique = app.user.boutique.nom ?? 'notre boutique' %}
+{% set message = "Bonjour " ~ commande.nomClient ~ ", c'est " ~ nomBoutique ~ ". Nous avons bien reçu votre commande n°" ~ commande.id ~ " d'un montant de " ~ commande.total|number_format(0, ',', ' ') ~ " FCFA. Nous vous contactons pour la livraison. Merci de votre confiance !" %}
+
+<div class="pg-head">
+    <div>
+        <h1>Commande n°{{ commande.id }} <span class="badge {{ commande.statut }}">{{ statuts[commande.statut] ?? commande.statut }}</span></h1>
+        <p>Passée le {{ commande.createdAt|date('d/m/Y à H:i') }}</p>
+    </div>
+    <div class="pg-boutons no-print" style="margin:0">
+        <a class="btn wa" href="https://wa.me/{{ tel }}?text={{ message|url_encode }}" target="_blank" rel="noopener">💬 Répondre sur WhatsApp</a>
+        <button type="button" class="btn secondary" onclick="window.print()">🖨️ Imprimer</button>
+    </div>
+</div>
+
+<div class="cols">
+    <section class="card">
+        <h3>Client</h3>
+        <p><strong>{{ commande.nomClient }}</strong></p>
+        <p>📞 <a href="tel:{{ commande.telephone|replace({' ': ''}) }}">{{ commande.telephone }}</a></p>
+        <p>📍 {{ commande.adresse|nl2br }}</p>
+        <p>💳 Paiement : <strong>{{ commande.modePaiement == 'momo' ? 'Mobile Money' : 'À la livraison' }}</strong></p>
+    </section>
+
+    <section class="card no-print">
+        <h3>Changer le statut</h3>
+        {% if commande.statut == 'annulee' %}
+            <p class="muted">Cette commande est annulée et ne peut plus être modifiée.</p>
+        {% else %}
+        <form method="post" action="{{ path('app_commande_statut', {id: commande.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('statut' ~ commande.id) }}">
+            <select name="statut">
+                {% for cle, libelle in statuts %}
+                    <option value="{{ cle }}" {{ commande.statut == cle ? 'selected' }}>{{ libelle }}</option>
+                {% endfor %}
+            </select>
+            <div><button type="submit" class="btn">Enregistrer</button></div>
+        </form>
+        <p class="muted">« Annulée » remet les produits en stock.</p>
+        {% endif %}
+    </section>
+</div>
+
+<section class="card">
+    <h3>Articles</h3>
+    <div class="pg-table-wrap">
+        <table class="pg-table">
+            <thead><tr><th>Produit</th><th class="num">Qté</th><th class="num">Prix unitaire</th><th class="num">Sous-total</th></tr></thead>
+            <tbody>
+            {% for l in commande.lignes %}
+                <tr>
+                    <td><strong>{{ l.produit.nom }}</strong></td>
+                    <td class="num">{{ l.quantite }}</td>
+                    <td class="num">{{ l.prixUnitaire|number_format(0, ',', ' ') }} FCFA</td>
+                    <td class="num prix">{{ (l.prixUnitaire * l.quantite)|number_format(0, ',', ' ') }} FCFA</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p class="pg-total">Total (livraison incluse) : <strong>{{ commande.total|number_format(0, ',', ' ') }} FCFA</strong></p>
+</section>
+
+<p class="no-print"><a class="btn secondary" href="{{ path('app_commande_index') }}">← Retour aux commandes</a></p>
+{% endblock %}

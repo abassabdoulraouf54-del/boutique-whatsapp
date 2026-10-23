@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord · {{ boutique.nom }}{% endblock %}
+
+{% block stylesheets %}<link rel="stylesheet" href="/css/dashboard.css">{% endblock %}
+
+{% block body %}
+{% set cartes = [
+    {cle: 'ca_jour', label: "CA du jour", fmt: 'fcfa', icone: '💰'},
+    {cle: 'ca_mois', label: "CA du mois", fmt: 'fcfa', icone: '📈'},
+    {cle: 'nb_jour', label: "Commandes du jour", fmt: 'nb', icone: '🧾'},
+    {cle: 'en_attente', label: "En attente", fmt: 'nb', icone: '⏳'},
+    {cle: 'panier_moyen', label: "Panier moyen (mois)", fmt: 'fcfa', icone: '🛒'},
+    {cle: 'produits_actifs', label: "Produits actifs", fmt: 'nb', icone: '📦'},
+    {cle: 'stock_bas', label: "Stock bas", fmt: 'nb', icone: '⚠️'},
+    {cle: 'rupture', label: "En rupture", fmt: 'nb', icone: '⛔'}
+] %}
+
+<div id="dashboard"
+     data-api="{{ path('admin_api_stats') }}"
+     data-commande="{{ path('app_commande_show', {id: 0}) }}"
+     data-jours="{{ stats.jours }}"
+     data-initial="{{ stats|json_encode|e('html_attr') }}">
+
+    <div class="db-entete">
+        <div>
+            <h1>Tableau de bord</h1>
+            <p class="db-sous">{{ boutique.nom }}</p>
+        </div>
+        <div class="db-outils">
+            <select id="db-periode" aria-label="Période">
+                <option value="7">7 jours</option>
+                <option value="30" selected>30 jours</option>
+                <option value="90">90 jours</option>
+            </select>
+            <button type="button" id="db-actualiser" class="db-btn">Actualiser</button>
+            <span class="db-live"><i class="db-point"></i> <span id="db-heure">{{ stats.genere_a }}</span></span>
+        </div>
+    </div>
+
+    <div id="db-alerte" class="db-alerte" hidden></div>
+
+    <section class="db-kpis">
+        {% for c in cartes %}
+            <article class="db-kpi">
+                <span class="db-kpi__label">{{ c.icone }} {{ c.label }}</span>
+                <strong class="db-kpi__val" data-kpi="{{ c.cle }}" data-fmt="{{ c.fmt }}">
+                    {{ stats.kpis[c.cle]|number_format(0, ',', ' ') }}{{ c.fmt == 'fcfa' ? ' FCFA' : '' }}
+                </strong>
+            </article>
+        {% endfor %}
+    </section>
+
+    <section class="db-grille">
+        <article class="db-carte">
+            <div class="db-carte__tete">
+                <h2>Chiffre d'affaires</h2>
+                <span id="db-total-periode" class="db-doux"></span>
+            </div>
+            <div class="db-graphe"><canvas id="db-courbe"></canvas></div>
+        </article>
+
+        <article class="db-carte">
+            <h2>Commandes par statut</h2>
+            <div class="db-graphe db-graphe--petit"><canvas id="db-anneau"></canvas></div>
+        </article>
+    </section>
+
+    <section class="db-grille db-grille--bas">
+        <article class="db-carte">
+            <div class="db-carte__tete">
+                <h2>Dernières commandes</h2>
+                <a href="{{ path('app_commande_index') }}">Tout voir</a>
+            </div>
+            <div class="db-table-wrap">
+                <table class="db-table">
+                    <thead><tr><th>N°</th><th>Client</th><th>Total</th><th>Statut</th><th>Date</th></tr></thead>
+                    <tbody id="db-dernieres"></tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="db-carte">
+            <h2>Top produits</h2>
+            <ol id="db-top" class="db-top"></ol>
+        </article>
+    </section>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="/js/chart.umd.min.js"></script>
+<script src="/js/dashboard.js"></script>
+{% endblock %}

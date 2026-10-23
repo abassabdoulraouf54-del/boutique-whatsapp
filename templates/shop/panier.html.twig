@@ -1,0 +1,56 @@
+{% extends 'shop/layout.html.twig' %}
+{% block title %}Panier - {{ boutique.nom }}{% endblock %}
+
+{% block body %}
+<h1>Mon panier</h1>
+
+{% if lignes %}
+<div class="cart-layout">
+    <div>
+    {% for l in lignes %}
+        <div class="cart-item">
+            {% if l.produit.image %}<img src="{{ l.produit.image }}" alt="">{% else %}<div class="ph">🛍️</div>{% endif %}
+            <div>
+                <strong>{{ l.produit.nom }}</strong>
+                <div class="muted">{{ l.produit.prix|number_format(0, ',', ' ') }} FCFA l'unité</div>
+                <div class="stepper">
+                    <form method="post" action="{{ path('shop_panier_qte', {slug: boutique.slug, id: l.produit.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('panier') }}">
+                        <input type="hidden" name="delta" value="-1">
+                        <button type="submit" aria-label="Diminuer">−</button>
+                    </form>
+                    <span>{{ l.qte }}</span>
+                    <form method="post" action="{{ path('shop_panier_qte', {slug: boutique.slug, id: l.produit.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('panier') }}">
+                        <input type="hidden" name="delta" value="1">
+                        <button type="submit" aria-label="Augmenter">+</button>
+                    </form>
+                </div>
+            </div>
+            <div class="cart-right">
+                <strong>{{ l.sous|number_format(0, ',', ' ') }} FCFA</strong>
+                <form method="post" action="{{ path('shop_panier_retirer', {slug: boutique.slug, id: l.produit.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('panier') }}">
+                    <button type="submit" class="btn danger small">Retirer</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <aside class="card totals">
+        <h3>Récapitulatif</h3>
+        <p><span>Sous-total</span> <strong>{{ sousTotal|number_format(0, ',', ' ') }} FCFA</strong></p>
+        <p><span>Livraison</span> <strong>{{ frais|number_format(0, ',', ' ') }} FCFA</strong></p>
+        <p class="grand"><span>Total</span> <strong>{{ total|number_format(0, ',', ' ') }} FCFA</strong></p>
+        <a class="btn block" href="{{ path('shop_commander', {slug: boutique.slug}) }}">Commander</a>
+        <a class="btn secondary block" href="{{ path('shop_catalogue', {slug: boutique.slug}) }}">Continuer mes achats</a>
+    </aside>
+</div>
+{% else %}
+<div class="card empty">
+    <p>Votre panier est vide.</p>
+    <a class="btn" href="{{ path('shop_catalogue', {slug: boutique.slug}) }}">Voir les produits</a>
+</div>
+{% endif %}
+{% endblock %}

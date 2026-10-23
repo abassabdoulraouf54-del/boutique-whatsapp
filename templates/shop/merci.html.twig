@@ -1,0 +1,20 @@
+{% extends 'shop/layout.html.twig' %}
+{% block title %}Commande enregistrée - {{ boutique.nom }}{% endblock %}
+
+{% block body %}
+<div class="card empty">
+    <h1>✅ Commande n°{{ commande.id }} enregistrée</h1>
+    <p>Merci {{ commande.nomClient }} ! Dernière étape : envoyez votre commande au vendeur sur WhatsApp pour qu'il la confirme.</p>
+    <p class="price">Total : {{ commande.total|number_format(0, ',', ' ') }} FCFA</p>
+    {% if commande.modePaiement == 'momo' and boutique.momoInfo %}
+    <div class="momo-box">
+        <strong>Paiement par Mobile Money</strong>
+        <p>Envoyez <b>{{ commande.total|number_format(0, ',', ' ') }} FCFA</b> à :</p>
+        <p class="momo-num">{{ boutique.momoInfo }}</p>
+        <p>Puis envoyez la capture ou la référence du transfert sur WhatsApp avec le bouton ci-dessous.</p>
+    </div>
+    {% endif %}
+    <a class="btn whatsapp block" href="{{ whatsapp_url }}" target="_blank" rel="noopener">Envoyer ma commande sur WhatsApp</a>
+    <a class="btn secondary block" href="{{ path('shop_catalogue', {slug: boutique.slug}) }}">Retour à la boutique</a>
+</div>
+{% endblock %}

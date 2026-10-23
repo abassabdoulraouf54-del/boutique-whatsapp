@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ produit.nom }}{% endblock %}
+
+{% block body %}
+<h1>{{ produit.nom }}</h1>
+
+<div class="card" style="text-align:center">
+    {% if produit.image %}
+        <img src="{{ produit.image }}" alt="{{ produit.nom }}" style="width:100%;max-width:320px;aspect-ratio:1/1;object-fit:cover;border-radius:12px;margin-bottom:16px">
+    {% endif %}
+    <p class="price" style="font-size:1.4rem;font-weight:700;color:var(--navy);margin:6px 0">{{ produit.prix|number_format(0, ',', ' ') }} FCFA</p>
+    <p class="muted">Catégorie : {{ produit.categorie }} · Stock : {{ produit.stock }} · {{ produit.actif ? 'Visible' : 'Masqué' }}</p>
+    {% if produit.description %}<p>{{ produit.description|nl2br }}</p>{% endif %}
+    <a class="btn block" href="{{ path('app_produit_edit', {id: produit.id}) }}">Modifier</a>
+    <a class="btn secondary block" href="{{ path('app_produit_index') }}">Retour à la liste</a>
+</div>
+{% endblock %}

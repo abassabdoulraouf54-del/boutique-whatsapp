@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nouvelle catégorie{% endblock %}
+
+{% block body %}
+<div class="pg-head">
+    <div>
+        <h1>Nouvelle catégorie</h1>
+        <p>Par exemple : Vêtements, Accessoires, Alimentation.</p>
+    </div>
+</div>
+{{ include('categorie/_form.html.twig') }}
+{% endblock %}

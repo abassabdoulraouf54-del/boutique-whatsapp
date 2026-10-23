@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+<h1>Mon compte</h1>
+<p class="muted">Connecté en tant que <strong>{{ app.user.userIdentifier }}</strong></p>
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn block">Changer mon mot de passe</button>
+{{ form_end(form) }}
+{% endblock %}

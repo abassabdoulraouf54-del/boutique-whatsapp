@@ -1,0 +1,27 @@
+{% extends 'shop/layout.html.twig' %}
+{% block title %}{{ produit.nom }} - {{ boutique.nom }}{% endblock %}
+
+{% block body %}
+<div class="detail">
+    <div class="pic">
+        {% if produit.image %}<img src="{{ produit.image }}" alt="{{ produit.nom }}">{% else %}<span class="ph">🛍️</span>{% endif %}
+    </div>
+    <div class="detail-info">
+        <p class="eyebrow-dark">{{ produit.categorie }}</p>
+        <h1>{{ produit.nom }}</h1>
+        <p class="price big">{{ produit.prix|number_format(0, ',', ' ') }} FCFA</p>
+        {% if produit.description %}<p class="detail-desc">{{ produit.description|nl2br }}</p>{% endif %}
+
+        {% if produit.stock > 0 %}
+            <p class="stock-ok">{{ produit.stock <= 3 ? 'Plus que ' ~ produit.stock ~ ' en stock' : 'Disponible' }}</p>
+            <form method="post" action="{{ path('shop_panier_ajouter', {slug: boutique.slug, id: produit.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('panier') }}">
+                <button type="submit" class="btn block">Ajouter au panier</button>
+            </form>
+        {% else %}
+            <p class="soldout">Produit indisponible pour le moment</p>
+        {% endif %}
+        <a class="btn secondary block" href="{{ path('shop_catalogue', {slug: boutique.slug}) }}">← Continuer mes achats</a>
+    </div>
+</div>
+{% endblock %}

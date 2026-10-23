@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block title %}Commandes{% endblock %}
+
+{% block body %}
+<div class="pg-head">
+    <div>
+        <h1>Commandes</h1>
+        <p>{{ commandes|length }} commande{{ commandes|length > 1 ? 's' }}{{ filtre ? ' · filtre : ' ~ (statuts[filtre] ?? filtre) }}</p>
+    </div>
+</div>
+
+<nav class="chips">
+    <a class="chip {{ filtre == '' ? 'active' }}" href="{{ path('app_commande_index') }}">Toutes</a>
+    {% for cle, libelle in statuts %}
+        <a class="chip {{ filtre == cle ? 'active' }}" href="{{ path('app_commande_index', {statut: cle}) }}">{{ libelle }}</a>
+    {% endfor %}
+</nav>
+
+{% if commandes %}
+<div class="pg-table-wrap">
+    <table class="pg-table">
+        <thead><tr><th>N°</th><th>Date</th><th>Client</th><th>Paiement</th><th class="num">Total</th><th>Statut</th><th></th></tr></thead>
+        <tbody>
+        {% for c in commandes %}
+            <tr>
+                <td><strong>#{{ c.id }}</strong></td>
+                <td>{{ c.createdAt|date('d/m/Y H:i') }}</td>
+                <td class="pg-nom"><strong>{{ c.nomClient }}</strong><small>{{ c.telephone }}</small></td>
+                <td>{{ c.modePaiement == 'momo' ? '📱 Mobile Money' : '🚚 À la livraison' }}</td>
+                <td class="num prix">{{ c.total|number_format(0, ',', ' ') }} FCFA</td>
+                <td><span class="badge {{ c.statut }}">{{ statuts[c.statut] ?? c.statut }}</span></td>
+                <td class="actions"><a class="btn secondary petit" href="{{ path('app_commande_show', {id: c.id}) }}">Voir</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card pg-vide">
+    <strong>Aucune commande</strong>
+    {{ filtre ? 'Aucune commande avec ce statut.' : 'Les commandes de vos clients apparaîtront ici.' }}
+</div>
+{% endif %}
+{% endblock %}

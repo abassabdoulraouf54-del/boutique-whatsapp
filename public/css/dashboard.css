@@ -1,0 +1,59 @@
+#dashboard {
+  --bleu: #0B1F3A; --bleu-2: #1D3B66; --bleu-3: #2F5A94;
+  --fond: #F4F1EA; --carte: #fff; --bord: #E2DDD0; --doux: #5B6B82;
+  --ok: #1F8A5B; --alerte: #D98A00; --danger: #C0392B;
+  color: var(--bleu);
+}
+#dashboard h1 { margin: 0; font-size: 1.6rem; }
+#dashboard h2 { margin: 0 0 12px; font-size: 1.05rem; }
+.db-sous, .db-doux { color: var(--doux); margin: 4px 0 0; font-size: .9rem; }
+
+.db-entete { display: flex; justify-content: space-between; align-items: flex-end;
+             gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.db-outils { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.db-outils select, .db-btn { padding: 8px 12px; border: 1px solid var(--bord); border-radius: 10px;
+                             background: #fff; color: var(--bleu); font: inherit; cursor: pointer; }
+.db-btn:hover { background: var(--bleu); color: #fff; }
+.db-live { display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; color: var(--doux); }
+.db-point { width: 8px; height: 8px; border-radius: 50%; background: var(--ok);
+            animation: db-pulse 2s infinite; }
+@keyframes db-pulse { 50% { opacity: .25; } }
+
+.db-alerte { background: var(--bleu); color: #fff; padding: 12px 16px; border-radius: 12px; margin-bottom: 14px; }
+
+.db-kpis { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.db-kpi, .db-carte { background: var(--carte); border: 1px solid var(--bord);
+                     border-radius: 14px; padding: 16px; box-shadow: 0 2px 10px rgba(11,31,58,.07); }
+.db-kpi__label { display: block; color: var(--doux); font-size: .85rem; }
+.db-kpi__val { display: block; margin-top: 6px; font-size: 1.55rem; font-weight: 800; }
+
+.db-grille { display: grid; gap: 14px; margin-top: 14px; grid-template-columns: 2fr 1fr; }
+.db-grille--bas { grid-template-columns: 2fr 1fr; }
+.db-carte__tete { display: flex; justify-content: space-between; align-items: baseline; }
+.db-carte__tete a { font-size: .85rem; color: var(--bleu-3); }
+.db-graphe { position: relative; height: 280px; }
+.db-graphe--petit { height: 240px; }
+
+.db-table-wrap { overflow-x: auto; }
+.db-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.db-table th { text-align: left; color: var(--doux); font-weight: 600; padding: 8px 6px; border-bottom: 1px solid var(--bord); }
+.db-table td { padding: 10px 6px; border-bottom: 1px solid #F0ECE2; }
+.db-table a { color: var(--bleu-3); font-weight: 700; text-decoration: none; }
+.db-vide { color: var(--doux); text-align: center; padding: 18px 0; }
+
+.db-badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .76rem; font-weight: 700;
+            background: #E8ECF3; color: var(--bleu-2); }
+.db-badge--en_attente { background: #FFF1D6; color: var(--alerte); }
+.db-badge--confirmee  { background: #E1ECFA; color: var(--bleu-3); }
+.db-badge--payee, .db-badge--livree { background: #DDF3E8; color: var(--ok); }
+.db-badge--annulee    { background: #F8DEDA; color: var(--danger); }
+
+.db-top { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.db-top li strong { display: block; }
+.db-top small { color: var(--doux); }
+.db-barre { height: 7px; border-radius: 99px; background: #EDE9DD; margin-top: 6px; overflow: hidden; }
+.db-barre i { display: block; height: 100%; background: var(--bleu-3); border-radius: 99px; }
+
+@media (max-width: 900px) {
+  .db-grille, .db-grille--bas { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier {{ produit.nom }}{% endblock %}
+
+{% block body %}
+<div class="pg-head">
+    <div>
+        <h1>Modifier le produit</h1>
+        <p>{{ produit.nom }}</p>
+    </div>
+</div>
+
+{% if produit.image %}
+<div class="pg-apercu">
+    <img src="{{ produit.image }}" alt="">
+    <span class="muted">Photo actuelle. Envoyez-en une nouvelle pour la remplacer.</span>
+</div>
+{% endif %}
+
+{{ include('produit/_form.html.twig', {button_label: 'Mettre à jour'}) }}
+
+<div class="pg-danger">
+    <p>Supprimer ce produit est définitif.</p>
+    <form method="post" action="{{ path('app_produit_delete', {id: produit.id}) }}" onsubmit="return confirm('Supprimer ce produit ?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id) }}">
+        <button type="submit" class="btn danger">Supprimer</button>
+    </form>
+</div>
+{% endblock %}

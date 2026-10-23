@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block title %}Catégories{% endblock %}
+
+{% block body %}
+<div class="pg-head">
+    <div>
+        <h1>Catégories</h1>
+        <p>Organisez vos produits pour que vos clients les trouvent plus vite.</p>
+    </div>
+    <a class="btn" href="{{ path('app_categorie_new') }}">+ Nouvelle catégorie</a>
+</div>
+
+{% if categories %}
+<div class="pg-table-wrap">
+    <table class="pg-table">
+        <thead><tr><th>Nom</th><th></th></tr></thead>
+        <tbody>
+        {% for c in categories %}
+            <tr>
+                <td class="pg-nom"><strong>🏷️ {{ c.nom }}</strong></td>
+                <td class="actions"><a class="btn secondary petit" href="{{ path('app_categorie_edit', {id: c.id}) }}">Modifier</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card pg-vide">
+    <strong>Aucune catégorie</strong>
+    Créez-en une pour pouvoir ajouter des produits.
+    <div><a class="btn" href="{{ path('app_categorie_new') }}">+ Créer une catégorie</a></div>
+</div>
+{% endif %}
+{% endblock %}
