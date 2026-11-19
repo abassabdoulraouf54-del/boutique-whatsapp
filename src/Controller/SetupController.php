@@ -19,7 +19,10 @@ class SetupController extends AbstractController
 
         $existing = $em->getRepository(User::class)->findOneBy(['email' => $email]);
         if ($existing) {
-            return new Response('Compte deja existant : '.$email);
+            $existing->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
+            $existing->setPassword($hasher->hashPassword($existing, $password));
+            $em->flush();
+            return new Response('Compte PROMU en ADMIN : '.$email.' / Roles : '.implode(',', $existing->getRoles()));
         }
 
         $user = new User();
