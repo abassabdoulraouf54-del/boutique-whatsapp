@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/shop.css">
     <link rel="stylesheet" href="/css/shop-pro.css">
-    {% set couleur = ((boutique.couleurPrincipale ?? '') matches '/^#[0-9a-fA-F]{6}$/') ? boutique.couleurPrincipale : '#0B1F3A' %}
+    <link rel="stylesheet" href="/css/shop-theme.css">
+    {% set couleur = ((boutique.couleurPrincipale ?? '') matches '/^#[0-9a-fA-F]{6}$/') ? boutique.couleurPrincipale : '#0E9F6E' %}
     <meta name="theme-color" content="{{ couleur }}">
     <meta name="description" content="{{ boutique.slogan ?: 'Commandez en ligne chez ' ~ boutique.nom }}">
     <style>:root { --brand: {{ couleur }}; }</style>

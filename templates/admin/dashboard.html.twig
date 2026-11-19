@@ -38,6 +38,13 @@
         </div>
     </div>
 
+    <div class="db-actions">
+        <a class="btn" href="{{ path('app_produit_index') }}">📦 Mes produits</a>
+        <a class="btn secondary" href="{{ path('app_commande_index') }}">🧾 Commandes</a>
+        <a class="btn secondary" href="{{ path('shop_catalogue', {slug: boutique.slug}) }}" target="_blank" rel="noopener">🌐 Voir ma boutique</a>
+        <a class="btn wa" href="https://wa.me/?text={{ ('Découvrez ' ~ boutique.nom ~ ' : ' ~ url('shop_catalogue', {slug: boutique.slug}))|url_encode }}" target="_blank" rel="noopener">💬 Partager sur WhatsApp</a>
+    </div>
+
     <div id="db-alerte" class="db-alerte" hidden></div>
 
     <section class="db-kpis">

@@ -2,7 +2,8 @@
 
 {% block body %}
 <section class="hero">
-    <span class="eyebrow">Boutique en ligne</span>
+    <span class="eyebrow" id="greet">Boutique en ligne</span>
+    <p class="hello" aria-label="Bienvenue"><span class="hello-w" aria-hidden="true">Welcome</span><span class="hello-w" aria-hidden="true">Bienvenue</span></p>
     <h1>{{ boutique.nom }}</h1>
     <p>{{ boutique.slogan ?: 'Choisissez vos produits et commandez en 2 minutes.' }}</p>
     <form class="search" method="get" action="{{ path('shop_catalogue', {slug: boutique.slug}) }}">
@@ -28,6 +29,10 @@
 {% endif %}
 
 {% if produits %}
+<div class="sec-titre">
+    <h2>{{ cat ? 'Produits de la catégorie' : 'Nos produits' }}</h2>
+    <small>{{ produits|length }} article{{ produits|length > 1 ? 's' : '' }}</small>
+</div>
 <div class="grid">
     {% for p in produits %}
     <article class="product">
@@ -61,4 +66,13 @@
     {% endif %}
 </div>
 {% endif %}
+{% if produits %}
+<section class="steps">
+    <h2>Comment commander ?</h2>
+    <div class="step"><b>1</b><strong>Choisissez</strong><p>Ajoutez vos produits au panier.</p></div>
+    <div class="step"><b>2</b><strong>Validez</strong><p>Indiquez votre adresse de livraison.</p></div>
+    <div class="step"><b>3</b><strong>Confirmez sur WhatsApp</strong><p>Le vendeur confirme et organise la livraison.</p></div>
+</section>
+{% endif %}
+<script src="/js/welcome.js"></script>
 {% endblock %}
