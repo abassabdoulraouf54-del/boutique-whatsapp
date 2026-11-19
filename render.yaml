@@ -1,0 +1,10 @@
+services:
+    - type: web
+    name: boutique-whatsapp
+    env: docker
+    plan: free
+    envVars:
+            - key: APP_ENV
+        value: prod
+            - key: APP_DEBUG
+        value: 0
